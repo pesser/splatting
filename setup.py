@@ -12,15 +12,12 @@ ext_modules = [
 ]
 
 
-cublas_include_paths = glob.glob("/usr/local/**/cublas_v2.h", recursive=True)
-if len(cublas_include_paths) > 0:
-    ext_modules.append(
-        cpp_extension.CUDAExtension(
-            "splatting.cuda",
-            ["cuda/splatting_cuda.cpp", "cuda/splatting.cu"],
-            include_dirs=[os.path.dirname(cublas_include_paths[0])],
-        ),
-    )
+ext_modules.append(
+    cpp_extension.CUDAExtension(
+        "splatting.cuda",
+        ["cuda/splatting_cuda.cpp", "cuda/splatting.cu"],
+    ),
+)
 
 
 setup(
