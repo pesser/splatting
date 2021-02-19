@@ -16,6 +16,8 @@ ext_modules.append(
     cpp_extension.CUDAExtension(
         "splatting.cuda",
         ["cuda/splatting_cuda.cpp", "cuda/splatting.cu"],
+        extra_compile_args={"nvcc": ["-gencode=arch=compute_61,code=sm_61",
+                                     "-gencode=arch=compute_80,code=sm_80"]},
     ),
 )
 
