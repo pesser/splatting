@@ -24,8 +24,9 @@ setup(
     name="splatting",
     ext_modules=ext_modules,
     cmdclass={"build_ext": cpp_extension.BuildExtension},
+    packages=["splatting"],
     install_requires=["torch"],
     extras_require={
         "dev": ["pytest", "pytest-cov", "pre-commit"]
-    },  # pip install -e '.[dev]'
+    },
 )
