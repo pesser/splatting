@@ -3,52 +3,11 @@ import torch
 from typing import Union
 import os
 
-splatting_dirname = os.path.dirname(os.path.dirname(__file__))
-
-try:
-    from splatting import cpu as splatting_cpu
-except ImportError:
-    # try JIT-compilation with ninja
-    from torch.utils.cpp_extension import load
-
-    splatting_cpu = load(
-        name="splatting_cpu",
-        sources=[os.path.join(splatting_dirname, "cpp/splatting.cpp")],
-        verbose=True,
-        extra_cflags=["-O3"],
-    )
-
-try:
+from splatting import cpu as splatting_cpu
+if torch.cuda.is_available():
     from splatting import cuda as splatting_cuda
-except ImportError:
-    # try JIT-compilation with ninja
-    from torch.utils.cpp_extension import load
-
-    try:
-        import glob
-        import os
-
-        splatting_cuda = load(
-            name="splatting_cuda",
-            sources=[
-                os.path.join(splatting_dirname, "cuda/splatting_cuda.cpp"),
-                os.path.join(splatting_dirname, "cuda/splatting.cu"),
-            ],
-            extra_include_paths=[
-                os.path.dirname(
-                    glob.glob("/usr/local/**/cublas_v2.h", recursive=True)[0]
-                )
-            ],
-            verbose=True,
-            extra_cflags=["-O3"],
-        )
-    except:
-        import warnings
-
-        warnings.warn(
-            "splatting.cuda could not be imported nor jit compiled", ImportWarning
-        )
-        splatting_cuda = None
+else:
+    splatting_cuda = None
 
 
 class SummationSplattingFunction(torch.autograd.Function):
