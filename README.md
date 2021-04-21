@@ -1,3 +1,6 @@
+Fork of [splatting](https://github.com/hperrot/splatting) with disabled JIT
+compilation and fix to build in conda environment. Original readme coming up.
+
 # splatting
 
 This is a reimplementation of [softmax-splatting](https://github.com/sniklaus/softmax-splatting), which can also be executed on CPU only devices.
